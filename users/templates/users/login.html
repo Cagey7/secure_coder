@@ -1,0 +1,28 @@
+{% extends "users/layout.html" %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4">
+                <p style="color: red;">{{ form.non_field_errors }}</p>
+                <h2>Login</h2>
+                <form action="{% url 'login' %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-outline mb-4">
+                        <input id="username" class="form-control" name="{{ form.username.name }}" />
+                        <label class="form-label" for="username">Username</label>
+                    </div>
+                    <div style="color: red;">{{ form.username.errors }}</div>
+                    <div class="form-outline mb-4">
+                        <input type="password" id="password" class="form-control" name="{{ form.password.name }}" />
+                        <label class="form-label" for="password">Password</label>
+                    </div>
+                    <div style="color: red;">{{ form.password.errors }}</div>
+                    <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
+                </form>
+            </div>
+            <div class="col-4"></div>
+        </div>
+    </div>
+{% endblock %}
