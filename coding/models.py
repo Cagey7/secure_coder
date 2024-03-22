@@ -13,6 +13,7 @@ class Vulnerability(models.Model):
 
 class Task(models.Model):
     name = models.CharField(max_length=255, verbose_name="task name")
+    description = models.TextField()
     slug = models.CharField(max_length=127, unique=True)
     code_task = models.TextField()
     solution = models.TextField()
