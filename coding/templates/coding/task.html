@@ -1,13 +1,19 @@
 {% extends "users/layout.html" %}
 
 {% block body %}
-    <br>
-    <h2>{{ task.name }}</h2>
-    <br>
-    <div>{{ task.description}}</div>
-    <br>
-    <textarea rows="15" cols="100">{{ task.code_task }}</textarea>
-    <br>
-    <br>
-    <button type="button" class="btn btn-secondary">Submit</button>
+    <form method="post" action="{% url 'check_task' task_id=task.id %}">
+        {% csrf_token %}
+        <br>
+        <h2>{{ task.name }}</h2>
+        {% if is_solved %}
+            <h4 style="color:green">SOLVED</h4>
+        {% endif %}
+        <br>
+        <div>{{ task.description }}</div>
+        <br>
+        <textarea name="user_answer" rows="15" cols="100">{{ task.code_task }}</textarea>
+        <br>
+        <br>
+        <button type="submit" class="btn btn-secondary">Submit</button>
+    </form>
 {% endblock %}

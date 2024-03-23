@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
+from django.contrib.auth import get_user_model
 
 
 class Vulnerability(models.Model):
@@ -22,6 +23,12 @@ class Task(models.Model):
     func_output = ArrayField(models.CharField())
     key_words = ArrayField(models.CharField())
     vulnerability = models.ForeignKey(Vulnerability, on_delete=models.PROTECT)
+    users = models.ManyToManyField(get_user_model(), through="SolvedTask")
 
     def __str__(self):
         return f"Vulnerability: {self.name}"
+
+
+class SolvedTask(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)

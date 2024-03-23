@@ -12,4 +12,9 @@ class VulnerabilityAdmin(admin.ModelAdmin):
 class TaskAdmin(admin.ModelAdmin):
     list_display = ["name"]
     list_per_page = 10
+
+
+@admin.register(SolvedTask)
+class TaskAdmin(admin.ModelAdmin):
+    list_per_page = 10
     
