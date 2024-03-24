@@ -3,17 +3,9 @@ from .models import Task, Vulnerability, SolvedTask
 from django.contrib.auth import get_user_model
 
 
-def home_vulnerability(request):
-    vulnerabilities = Vulnerability.objects.all()
-    context = {
-        "vulnerabilities": vulnerabilities,
-    }
-    return render(request, "coding/home_vulnerability.html", context=context)
-
-
 def vulnerability_list(request, vulnerability_slug):
-    vulnerability_id = Vulnerability.objects.get(slug=vulnerability_slug).id
-    tasks = Task.objects.filter(vulnerability_id=vulnerability_id)
+    vulnerability = Vulnerability.objects.get(slug=vulnerability_slug)
+    tasks = Task.objects.filter(vulnerability_id=vulnerability.id)
     vulnerabilities = Vulnerability.objects.all()
     user = request.user
 
@@ -21,8 +13,9 @@ def vulnerability_list(request, vulnerability_slug):
         "vulnerabilities": vulnerabilities,
         "tasks": tasks,
         "user": user,
+        "selected_vulnerability": vulnerability,
     }
-    return render(request, "coding/vulnerability.html", context=context)
+    return render(request, "coding/vulnerability_tasks.html", context=context)
 
 
 def task_page(request, task_slug):
@@ -44,3 +37,11 @@ def check_task(request, task_id):
         task.users.add(user)
 
         return redirect(request.META.get('HTTP_REFERER', 'index'))
+
+
+def vulnerability_info(request, vulnerability_slug):
+    vulnerability = Vulnerability.objects.get(slug=vulnerability_slug)
+    context = {
+        "vulnerability": vulnerability,
+    }
+    return render(request, "coding/vulnerability_info.html", context=context)

@@ -1,5 +1,15 @@
 {% extends "users/layout.html" %}
 
 {% block body %}
-    <h1>Главная страница</h1>
+    {% for vulnerability in vulnerabilities %}
+        <br>
+        <a href="{% url 'vulnerability' vulnerability.slug %}" style="text-decoration: none;">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ vulnerability.name }}</h5>
+                    <p class="card-text">{{ vulnerability.task_set.count }} tasks</p>
+                </div>
+            </div>
+        </a>
+    {% endfor %}
 {% endblock %}

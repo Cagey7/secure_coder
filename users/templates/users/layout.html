@@ -19,7 +19,12 @@
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" style="color:white" href="{% url 'home_vulnerability' %}">Solve tasks</a>
+                        <a class="nav-link" style="color:white" href="{% url 'tasks' 'sql-injection' %}">Solve tasks</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" style="color:white" href="{% url 'profile' %}">Profile</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav">

@@ -1,11 +1,16 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout
+from coding.models import *
 from .forms import *
 
 
 def index(request):
-    return render(request, "users/index.html")
+    vulnerabilities = Vulnerability.objects.all()
+    context = {
+        "vulnerabilities": vulnerabilities
+    }
+    return render(request, "users/index.html", context=context)
 
 
 def login(request):
@@ -44,6 +49,10 @@ def register(request):
         "title": "Регистрация"
     }
     return render(request, "users/register.html", context=context)
+
+
+def profile(request):
+    return render(request, "users/profile.html")
 
 
 def logout_user(request):
