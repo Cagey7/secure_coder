@@ -6,7 +6,10 @@ from .forms import *
 
 
 def index(request):
-    vulnerabilities = Vulnerability.objects.all()
+    if not request.user.is_authenticated:
+        return redirect("login")
+    
+    vulnerabilities = Vulnerability.objects.all().order_by("id")
     context = {
         "vulnerabilities": vulnerabilities
     }
@@ -52,6 +55,9 @@ def register(request):
 
 
 def profile(request):
+    if not request.user.is_authenticated:
+        return redirect("login")
+    
     return render(request, "users/profile.html")
 
 

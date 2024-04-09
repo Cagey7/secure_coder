@@ -4,9 +4,12 @@ from django.contrib.auth import get_user_model
 
 
 def vulnerability_list(request, vulnerability_slug):
+    if not request.user.is_authenticated:
+        return redirect("login")
+
     vulnerability = Vulnerability.objects.get(slug=vulnerability_slug)
     tasks = Task.objects.filter(vulnerability_id=vulnerability.id)
-    vulnerabilities = Vulnerability.objects.all()
+    vulnerabilities = Vulnerability.objects.all().order_by("id")
     user = request.user
 
     context = {
@@ -19,6 +22,9 @@ def vulnerability_list(request, vulnerability_slug):
 
 
 def task_page(request, task_slug):
+    if not request.user.is_authenticated:
+        return redirect("login")
+    
     task = Task.objects.get(slug=task_slug)
     user = request.user
     is_solved = SolvedTask.objects.filter(task=task, user=user).exists()
@@ -30,16 +36,19 @@ def task_page(request, task_slug):
 
 
 def check_task(request, task_id):
-    if request.method == 'POST':
-        user_answer = request.POST.get('user_answer') 
+    if request.method == "POST":
+        user_answer = request.POST.get("user_answer") 
         task = Task.objects.get(pk=task_id)
         user = request.user
         task.users.add(user)
 
-        return redirect(request.META.get('HTTP_REFERER', 'index'))
+        return redirect(request.META.get("HTTP_REFERER", "index"))
 
 
 def vulnerability_info(request, vulnerability_slug):
+    if not request.user.is_authenticated:
+        return redirect("login")
+    
     vulnerability = Vulnerability.objects.get(slug=vulnerability_slug)
     context = {
         "vulnerability": vulnerability,

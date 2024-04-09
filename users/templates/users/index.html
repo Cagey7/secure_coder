@@ -1,15 +1,23 @@
 {% extends "users/layout.html" %}
 
 {% block body %}
+<br><br>
+<h2 style="color:rgb(25,0,150);">All topics</h2>
+<br>
+<p>If you're new to web security, it can be difficult to know where to begin. We recommend working through the topics available, completing the labs as you go, but don't be afraid to move on to the next topic if you get stuck. You can go back to the more challenging labs once you've developed your skills further.</p>
+<br>
+<div class="container">
+    <div class="row">
     {% for vulnerability in vulnerabilities %}
-        <br>
-        <a href="{% url 'vulnerability' vulnerability.slug %}" style="text-decoration: none;">
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">{{ vulnerability.name }}</h5>
-                    <p class="card-text">{{ vulnerability.task_set.count }} tasks</p>
-                </div>
+            <div class="card" style="width: 16rem; margin: 10px 25px; background: rgb(222,222,222);" >
+                <a href="{% url 'vulnerability' vulnerability.slug %}" style="text-decoration: none;">
+                    <div class="card-body" style="color:black;">
+                        <h5 class="card-title">{{ vulnerability.name }}</h5>
+                        <p class="card-text">{{ vulnerability.task_set.count }} tasks</p>
+                    </div>
+                </a>
             </div>
-        </a>
     {% endfor %}
+    </div>
+</div>
 {% endblock %}
