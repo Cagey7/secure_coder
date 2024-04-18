@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Task, Vulnerability, SolvedTask
-from django.contrib.auth import get_user_model
+from django.contrib import messages
+from .utils import *
 
 
 def vulnerability_list(request, vulnerability_slug):
@@ -37,11 +38,26 @@ def task_page(request, task_slug):
 
 def check_task(request, task_id):
     if request.method == "POST":
-        user_answer = request.POST.get("user_answer") 
-        task = Task.objects.get(pk=task_id)
-        user = request.user
-        task.users.add(user)
+        user_answer = request.POST.get("user_answer")
+        task = Task.objects.get(id=task_id)
 
+        for question in task.gpt_questions.all():
+            if question.order == 2:
+                continue
+            print(question.question)
+            if question.compare_code:
+                if ask_chatgpt(question.question, f"Первый код:{task.code_task}, \n второй код:{user_answer}"):
+                    messages.error(request, question.answer)
+                    return redirect(request.META.get("HTTP_REFERER", "index"))
+            else:
+                if ask_chatgpt(question.question, user_answer):
+                    messages.error(request, question.answer)
+                    return redirect(request.META.get("HTTP_REFERER", "index"))
+        msg = "Задание выполнено верно🙃"
+        # task = Task.objects.get(pk=task_id)
+        # user = request.user
+        # task.users.add(user)
+        messages.error(request, msg)
         return redirect(request.META.get("HTTP_REFERER", "index"))
 
 

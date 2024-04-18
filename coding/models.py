@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth import get_user_model
 
 
@@ -18,15 +17,26 @@ class Task(models.Model):
     slug = models.CharField(max_length=127, unique=True)
     code_task = models.TextField()
     solution = models.TextField()
-    hint = models.CharField(max_length=511)
-    func_input = ArrayField(models.CharField())
-    func_output = ArrayField(models.CharField())
-    key_words = ArrayField(models.CharField())
+    hint = models.TextField()
     vulnerability = models.ForeignKey(Vulnerability, on_delete=models.PROTECT)
+    gpt_questions = models.ManyToManyField("GptQuestion")
     users = models.ManyToManyField(get_user_model(), through="SolvedTask")
 
     def __str__(self):
         return f"Vulnerability: {self.name}"
+
+
+class GptQuestion(models.Model):
+    question = models.TextField()
+    answer = models.CharField(max_length=127)
+    order = models.IntegerField(default=100)
+    compare_code = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ["order"]
+
+    def __str__(self):
+        return f"{self.question}"
 
 
 class SolvedTask(models.Model):

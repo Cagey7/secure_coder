@@ -17,4 +17,8 @@ class TaskAdmin(admin.ModelAdmin):
 @admin.register(SolvedTask)
 class TaskAdmin(admin.ModelAdmin):
     list_per_page = 10
-    
+
+
+@admin.register(GptQuestion)
+class GptQuestionAdmin(admin.ModelAdmin):
+    list_per_page = 10

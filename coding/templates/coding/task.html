@@ -4,16 +4,29 @@
     <form method="post" action="{% url 'check_task' task_id=task.id %}">
         {% csrf_token %}
         <br>
-        <h2>{{ task.name }}</h2>
+        <h3>{{ task.name }}</h3>
         {% if is_solved %}
             <h4 style="color:green">SOLVED</h4>
         {% endif %}
         <br>
-        <div>{{ task.description }}</div>
+        <h5>Description</h5>
+        <div>{{ task.description | safe}}</div>
+        <div>Find the vulnerability and fix it in the box below.</div>
+        <br>
+        <h5>Hint</h5>
+        <div>{{ task.hint }}</div>
         <br>
         <textarea name="user_answer" rows="15" cols="100">{{ task.code_task }}</textarea>
         <br>
         <br>
         <button type="submit" class="btn btn-secondary">Submit</button>
     </form>
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
 {% endblock %}
