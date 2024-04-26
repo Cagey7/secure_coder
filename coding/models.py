@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.contrib.postgres.fields import ArrayField
 
 
 class Vulnerability(models.Model):
@@ -19,7 +20,8 @@ class Task(models.Model):
     solution = models.TextField()
     hint = models.TextField()
     vulnerability = models.ForeignKey(Vulnerability, on_delete=models.PROTECT)
-    gpt_questions = models.ManyToManyField("GptQuestion")
+    gpt_questions = models.ManyToManyField("GptQuestion", blank=True)
+    key_words = ArrayField(models.CharField(max_length=511), default=list)
     users = models.ManyToManyField(get_user_model(), through="SolvedTask")
 
     def __str__(self):
@@ -30,7 +32,7 @@ class GptQuestion(models.Model):
     question = models.TextField()
     answer = models.CharField(max_length=127)
     order = models.IntegerField(default=100)
-    compare_code = models.BooleanField(default=False)
+    long_answer = models.BooleanField(default=False)
 
     class Meta:
         ordering = ["order"]

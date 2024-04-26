@@ -41,18 +41,16 @@ def check_task(request, task_id):
         user_answer = request.POST.get("user_answer")
         task = Task.objects.get(id=task_id)
 
+        for word in task.key_words:
+            if word not in user_answer:
+                msg = "Ошибка"
+                messages.error(request, msg)
+                return redirect(request.META.get("HTTP_REFERER", "index"))
+
         for question in task.gpt_questions.all():
-            if question.order == 2:
-                continue
-            print(question.question)
-            if question.compare_code:
-                if ask_chatgpt(question.question, f"Первый код:{task.code_task}, \n второй код:{user_answer}"):
-                    messages.error(request, question.answer)
-                    return redirect(request.META.get("HTTP_REFERER", "index"))
-            else:
-                if ask_chatgpt(question.question, user_answer):
-                    messages.error(request, question.answer)
-                    return redirect(request.META.get("HTTP_REFERER", "index"))
+            if ask_chatgpt(question.question, user_answer):
+                messages.error(request, question.answer)
+                return redirect(request.META.get("HTTP_REFERER", "index"))
         msg = "Задание выполнено верно🙃"
         # task = Task.objects.get(pk=task_id)
         # user = request.user
