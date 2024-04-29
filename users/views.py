@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout
+from django.db.models import Count
 from coding.models import *
 from .forms import *
 
@@ -58,7 +59,26 @@ def profile(request):
     if not request.user.is_authenticated:
         return redirect("login")
     
-    return render(request, "users/profile.html")
+    total_vulnerabilities = Task.objects.values('vulnerability__name') \
+        .annotate(total=Count('vulnerability'))
+
+    solved_vulnerabilities = SolvedTask.objects.filter(user=request.user) \
+        .values('task__vulnerability__name') \
+        .annotate(solved=Count('task__vulnerability')) \
+        .order_by('task__vulnerability__name')
+
+    vulnerabilities_count = {}
+    for vulnerability in total_vulnerabilities:
+        vulnerabilities_count[vulnerability['vulnerability__name']] = {
+            'total': vulnerability['total'],
+            'solved': 0
+        }
+
+    for vulnerability in solved_vulnerabilities:
+        if vulnerability['task__vulnerability__name'] in vulnerabilities_count:
+            vulnerabilities_count[vulnerability['task__vulnerability__name']]['solved'] = vulnerability['solved']
+
+    return render(request, "users/profile.html", context={"vulnerabilities_count": vulnerabilities_count})
 
 
 def logout_user(request):

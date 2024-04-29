@@ -16,14 +16,16 @@
         <br>
         <br>
         <button style="padding: 8px 30px;" type="button" class="btn btn-outline-secondary" id="toggleButton">Hint</button>
-        {% comment %} <button type="button" class="btn btn-outline-secondary" id="toggleButton2">Hint</button> {% endcomment %}
         <br>
         <div id="hiddenField" style="display: none;">{{ task.hint }}</div>
+        <br>
+        <button id="toggleButton2" type="button" style="padding: 8px 30px;" class="btn btn-outline-secondary">Solution</button>
+        <br>
+        <textarea id="sol" style="display: none;">{{ task.solution }}</textarea>
         <br>
         <textarea name="user_answer" class="code">{{ task.code_task }}</textarea>
         <br>
         <br>
-
         {% if messages %}
             {% for message in messages %}
                 <div style="color: {% if message.tags == 'error' %}red{% else %}green{% endif %}; font-size: 22px;">
@@ -31,10 +33,9 @@
                 </div>
             {% endfor %}
         {% endif %}
-
         <br>
         <button type="submit" class="btn btn-secondary btn-lg">Submit</button>
-
+        
 
     </form> 
 

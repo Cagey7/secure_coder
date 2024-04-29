@@ -2,4 +2,14 @@
 
 {% block body %}
     {{ user.username }}
+
+    {% if vulnerabilities_count %}
+        <ul>
+        {% for name, counts in vulnerabilities_count.items %}
+            <li>{{ name }}: {{ counts.solved }}/{{ counts.total }} tasks solved</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No vulnerabilities data available.</p>
+    {% endif %}
 {% endblock %}

@@ -1,4 +1,8 @@
 from openai import OpenAI
+import pyflakes.api
+import pyflakes.reporter
+import sys
+import io
 
 client = OpenAI()
 
@@ -24,3 +28,16 @@ def ask_chatgpt(context, user_answer):
             return False
 
     return False
+
+
+def check_python_code(code):
+    error_stream = io.StringIO()
+    original_stderr = sys.stderr
+    sys.stderr = error_stream
+
+    try:
+        pyflakes.api.check(code, filename='input_code')
+    finally:
+        sys.stderr = original_stderr
+
+    return error_stream.getvalue()

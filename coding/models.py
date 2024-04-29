@@ -22,6 +22,7 @@ class Task(models.Model):
     vulnerability = models.ForeignKey(Vulnerability, on_delete=models.PROTECT)
     gpt_questions = models.ManyToManyField("GptQuestion", blank=True)
     key_words = ArrayField(models.CharField(max_length=511), default=list)
+    lang = models.CharField(max_length=63, default="python")
     users = models.ManyToManyField(get_user_model(), through="SolvedTask")
 
     def __str__(self):

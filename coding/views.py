@@ -40,17 +40,18 @@ def check_task(request, task_id):
     if request.method == "POST":
         user_answer = request.POST.get("user_answer")
         task = Task.objects.get(id=task_id)
-
+        msg = check_python_code(user_answer)
+        
+        if task.lang == "python" and msg:
+            messages.error(request, msg)
+            return redirect(request.META.get("HTTP_REFERER", "index"))
+            
         for word in task.key_words:
             if word not in user_answer:
                 msg = "The code still contains a vulnerability or incorrect input"
                 messages.error(request, msg)
                 return redirect(request.META.get("HTTP_REFERER", "index"))
 
-        # for question in task.gpt_questions.all():
-        #     if ask_chatgpt(question.question, user_answer):
-        #         messages.success(request, question.answer)
-        #         return redirect(request.META.get("HTTP_REFERER", "index"))
         msg = "Correct answer 🙃"
         task = Task.objects.get(pk=task_id)
         user = request.user
