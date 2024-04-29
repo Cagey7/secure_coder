@@ -1,15 +1,13 @@
 {% extends "users/layout.html" %}
 
 {% block body %}
-    {{ user.username }}
-
+    <br>
+    <h3>Solved task</h3>
     {% if vulnerabilities_count %}
-        <ul>
-        {% for name, counts in vulnerabilities_count.items %}
-            <li>{{ name }}: {{ counts.solved }}/{{ counts.total }} tasks solved</li>
+        {% for vulnerability, counts in vulnerabilities_count.items %}
+        <a href="{% url 'tasks' vulnerability.slug %}" style="text-decoration: none; color: black;">
+            <div style="background-color: rgb(216,216,216); padding: 10px; margin: 10px;">{{ vulnerability.name }}: {{ counts.solved }}/{{ counts.total }} tasks solved</div>
+        </a>    
         {% endfor %}
-        </ul>
-    {% else %}
-        <p>No vulnerabilities data available.</p>
     {% endif %}
 {% endblock %}

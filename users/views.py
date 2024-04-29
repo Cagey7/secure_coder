@@ -56,27 +56,30 @@ def register(request):
 
 
 def profile(request):
+    from django.shortcuts import get_object_or_404
+
     if not request.user.is_authenticated:
         return redirect("login")
-    
-    total_vulnerabilities = Task.objects.values('vulnerability__name') \
+
+    total_vulnerabilities = Task.objects.values('vulnerability') \
         .annotate(total=Count('vulnerability'))
 
     solved_vulnerabilities = SolvedTask.objects.filter(user=request.user) \
-        .values('task__vulnerability__name') \
+        .values('task__vulnerability') \
         .annotate(solved=Count('task__vulnerability')) \
         .order_by('task__vulnerability__name')
 
     vulnerabilities_count = {}
-    for vulnerability in total_vulnerabilities:
-        vulnerabilities_count[vulnerability['vulnerability__name']] = {
-            'total': vulnerability['total'],
+    for vulnerability_data in total_vulnerabilities:
+        vulnerability = get_object_or_404(Vulnerability, pk=vulnerability_data['vulnerability'])
+        vulnerabilities_count[vulnerability] = {
+            'total': vulnerability_data['total'],
             'solved': 0
         }
 
-    for vulnerability in solved_vulnerabilities:
-        if vulnerability['task__vulnerability__name'] in vulnerabilities_count:
-            vulnerabilities_count[vulnerability['task__vulnerability__name']]['solved'] = vulnerability['solved']
+    for solved_data in solved_vulnerabilities:
+        vulnerability = get_object_or_404(Vulnerability, pk=solved_data['task__vulnerability'])
+        vulnerabilities_count[vulnerability]['solved'] = solved_data['solved']
 
     return render(request, "users/profile.html", context={"vulnerabilities_count": vulnerabilities_count})
 
