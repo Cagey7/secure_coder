@@ -43,19 +43,19 @@ def check_task(request, task_id):
 
         for word in task.key_words:
             if word not in user_answer:
-                msg = "Ошибка"
+                msg = "The code still contains a vulnerability or incorrect input"
                 messages.error(request, msg)
                 return redirect(request.META.get("HTTP_REFERER", "index"))
 
-        for question in task.gpt_questions.all():
-            if ask_chatgpt(question.question, user_answer):
-                messages.error(request, question.answer)
-                return redirect(request.META.get("HTTP_REFERER", "index"))
-        msg = "Задание выполнено верно🙃"
-        # task = Task.objects.get(pk=task_id)
-        # user = request.user
-        # task.users.add(user)
-        messages.error(request, msg)
+        # for question in task.gpt_questions.all():
+        #     if ask_chatgpt(question.question, user_answer):
+        #         messages.success(request, question.answer)
+        #         return redirect(request.META.get("HTTP_REFERER", "index"))
+        msg = "Correct answer 🙃"
+        task = Task.objects.get(pk=task_id)
+        user = request.user
+        task.users.add(user)
+        messages.success(request, msg)
         return redirect(request.META.get("HTTP_REFERER", "index"))
 
 

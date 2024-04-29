@@ -1,32 +1,42 @@
 {% extends "users/layout.html" %}
-
 {% block body %}
+    <br>
+    <a href="{% url 'tasks' task.vulnerability.slug %}" style="text-decoration: none; font-size: 16px; color: rgb(98,119,255);"> Back to tasks</a>
     <form method="post" action="{% url 'check_task' task_id=task.id %}">
         {% csrf_token %}
         <br>
-        <h3>{{ task.name }}</h3>
+        <h2 style="display: inline;">{{ task.name }}</h2>
         {% if is_solved %}
-            <h4 style="color:green">SOLVED</h4>
+            <h4 style="display: inline; background-color: rgb(70,188,121); color: white; margin-left: 10px; padding: 4px; border-radius: 15px;">SOLVED</h4>
         {% endif %}
-        <br>
-        <h5>Description</h5>
+        <hr>
         <div>{{ task.description | safe}}</div>
         <div>Find the vulnerability and fix it in the box below.</div>
-        <br>
-        <h5>Hint</h5>
-        <div>{{ task.hint }}</div>
-        <br>
-        <textarea name="user_answer" rows="15" cols="100">{{ task.code_task }}</textarea>
+        <a href="{% url 'vulnerability' task.vulnerability.slug %}" style="text-decoration: none; font-size: 22px; color: rgb(17,49,255);"> Learn more about {{ task.vulnerability.name }}</a>
         <br>
         <br>
-        <button type="submit" class="btn btn-secondary">Submit</button>
-    </form>
-    {% if messages %}
-        <ul>
+        <button style="padding: 8px 30px;" type="button" class="btn btn-outline-secondary" id="toggleButton">Hint</button>
+        {% comment %} <button type="button" class="btn btn-outline-secondary" id="toggleButton2">Hint</button> {% endcomment %}
+        <br>
+        <div id="hiddenField" style="display: none;">{{ task.hint }}</div>
+        <br>
+        <textarea name="user_answer" class="code">{{ task.code_task }}</textarea>
+        <br>
+        <br>
+
+        {% if messages %}
             {% for message in messages %}
-                <li>{{ message }}</li>
+                <div style="color: {% if message.tags == 'error' %}red{% else %}green{% endif %}; font-size: 22px;">
+                    {{ message }}
+                </div>
             {% endfor %}
-        </ul>
-    {% endif %}
+        {% endif %}
+
+        <br>
+        <button type="submit" class="btn btn-secondary btn-lg">Submit</button>
+
+
+    </form> 
 
 {% endblock %}
+
