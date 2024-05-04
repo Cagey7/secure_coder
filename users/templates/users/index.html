@@ -3,11 +3,24 @@
 
 {% block body %}
 <br><br>
-{% comment %} <img class="img-fluid" src="{% static 'users/images/code.jpg' %}" alt="Описание изображения" width="1200"> {% endcomment %}
-<h2 style="color:rgb(25,0,150);">All topics</h2>
-<br>
-<p>If you're new to web security, it can be difficult to know where to begin. We recommend working through the topics available, completing the labs as you go, but don't be afraid to move on to the next topic if you get stuck. You can go back to the more challenging labs once you've developed your skills further.</p>
-<br>
+<div class="mx-auto" style="max-width: 1200px;">
+    <h3>About Secure Coder</h3>
+    <br>
+    <p style="font-size:17px;">This portal is designed for students and others interested in enhancing their knowledge of writing secure code. Here, you can explore various vulnerabilities through educational materials and improve your skills with practical exercises. Whether you're a novice or an experienced coder, the platform offers a comprehensive learning experience to understand and mitigate potential security risks in programming. By delving into different types of vulnerabilities and practicing coding techniques in a safe environment, participants can fortify their understanding of secure coding practices. The combination of theoretical knowledge and hands-on application provided by this platform equips individuals with the expertise needed to develop robust and secure software applications. Whether it's learning about common pitfalls like SQL injection or cross-site scripting and other vulnerabilities to prevent them, this portal serves as a valuable resource for anyone striving to write code that prioritizes security.</p>
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="col-3">
+            <br><br><br><br>
+            <a href="{% url 'tasks' 'sql-injection' %}" class="btn btn-outline-secondary btn-lg" style="text-decoration: none;width: 200px;">
+                Go to tasks
+            </a>
+        </div>
+        <div class="col-6"><img class="mx-auto" src="../../static/users/images/secure.png" style="width: 300px;"/></div>
+    </div>
+    <h3>All topics</h3>
+    <p style="font-size:17px;">Select a topic to learn more about it</p>
+</div>
+
 <div class="container">
     <div class="row">
     {% for vulnerability in vulnerabilities %}

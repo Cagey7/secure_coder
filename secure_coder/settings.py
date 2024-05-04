@@ -78,10 +78,10 @@ WSGI_APPLICATION = 'secure_coder.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "secure_coder_db",
+        "NAME": "check",
         "USER": "postgres",
         "PASSWORD": "123456",
-        "HOST": "db",
+        "HOST": "localhost",
         "PORT": "5432",
     }
 }
