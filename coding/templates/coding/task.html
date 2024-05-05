@@ -12,7 +12,7 @@
         <hr>
         <div>{{ task.description | safe}}</div>
         <div>Find the vulnerability and fix it in the box below.</div>
-        <div style="color:red;">WARRING! Change only part with vulnerability.</div>
+        <div style="color:red;">WARNING! Change only part with vulnerability.</div>
         <a href="{% url 'vulnerability' task.vulnerability.slug %}" style="text-decoration: none; font-size: 22px; color: rgb(17,49,255);"> Learn more about {{ task.vulnerability.name }}</a>
         <br>
         <br>
