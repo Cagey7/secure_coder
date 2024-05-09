@@ -6,8 +6,9 @@
     {% if vulnerabilities_count %}
         {% for vulnerability, counts in vulnerabilities_count.items %}
         <a href="{% url 'tasks' vulnerability.slug %}" style="text-decoration: none; color: black;">
-            <div style="background-color: rgb(216,216,216); padding: 10px; margin: 10px;">{{ vulnerability.name }}: {{ counts.solved }}/{{ counts.total }} tasks solved</div>
+            <div style="background-color: rgb(227,214,229); padding: 10px; margin: 10px;">{{ vulnerability.name }}: {{ counts.solved }}/{{ counts.total }} tasks solved</div>
         </a>    
         {% endfor %}
     {% endif %}
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 {% endblock %}

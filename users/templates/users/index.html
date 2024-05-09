@@ -11,7 +11,7 @@
         <div class="col-3"></div>
         <div class="col-3">
             <br><br><br><br>
-            <a href="{% url 'tasks' 'sql-injection' %}" class="btn btn-outline-secondary btn-lg" style="text-decoration: none;width: 200px;">
+            <a href="{% url 'tasks' 'sql-injection' %}" class="btn btn-outline-secondary btn-lg button-effect" style="text-decoration: none;width: 200px;">
                 Go to tasks
             </a>
         </div>
@@ -24,7 +24,7 @@
 <div class="container">
     <div class="row">
     {% for vulnerability in vulnerabilities %}
-            <div class="card" style="width: 16rem; margin: 10px 25px; background: rgb(222,222,222);" >
+            <div class="card" style="width: 16rem; margin: 10px 25px; background: rgb(227,214,229);" >
                 <a href="{% url 'vulnerability' vulnerability.slug %}" style="text-decoration: none;">
                     <div class="card-body" style="color:black;">
                         <h5 class="card-title">{{ vulnerability.name }}</h5>

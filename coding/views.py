@@ -38,26 +38,41 @@ def task_page(request, task_slug):
 
 def check_task(request, task_id):
     if request.method == "POST":
-        user_answer = request.POST.get("user_answer")
-        task = Task.objects.get(id=task_id)
-        msg = check_python_code(user_answer)
-        
-        if task.lang == "python" and msg:
-            messages.error(request, msg)
-            return redirect(request.META.get("HTTP_REFERER", "index"))
+        action = request.POST.get("action")
+        if action == "submit":
+            user_answer = request.POST.get("user_answer")
+            task = Task.objects.get(id=task_id)
+            msg = check_python_code(user_answer)
             
-        for word in task.key_words:
-            if word not in user_answer:
-                msg = "The code still contains a vulnerability or incorrect input"
+            if task.lang == "python" and msg:
                 messages.error(request, msg)
                 return redirect(request.META.get("HTTP_REFERER", "index"))
+                
+            for word in task.key_words:
+                if word not in user_answer:
+                    msg = "The code still contains a vulnerability or incorrect input"
+                    messages.error(request, msg)
+                    return redirect(request.META.get("HTTP_REFERER", "index"))
 
-        msg = "Correct answer 🙃"
-        task = Task.objects.get(pk=task_id)
-        user = request.user
-        task.users.add(user)
-        messages.success(request, msg)
-        return redirect(request.META.get("HTTP_REFERER", "index"))
+            msg = "Correct answer 🙃"
+            task = Task.objects.get(pk=task_id)
+            user = request.user
+            task.users.add(user)
+            messages.success(request, msg)
+            return redirect(request.META.get("HTTP_REFERER", "index"))
+        elif action == "ask_gpt":
+            user_answer = request.POST.get("user_answer")
+            
+            completion = client.chat.completions.create(
+                model="gpt-3.5-turbo-0125",
+                messages=[
+                    {"role": "system", "content": f"Дай подсказу об уязвимостях в коде"},
+                    {"role": "user", "content": f"{user_answer}"}
+                ]
+            )
+            gpt_answer = completion.choices[0].message.content
+            messages.info(request, gpt_answer)
+            return redirect(request.META.get("HTTP_REFERER", "index"))
 
 
 def vulnerability_info(request, vulnerability_slug):

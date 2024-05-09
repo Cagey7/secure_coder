@@ -81,7 +81,7 @@ DATABASES = {
         "NAME": "secure_coder_db",
         "USER": "postgres",
         "PASSWORD": "123456",
-        "HOST": "db",
+        "HOST": "localhost",
         "PORT": "5432",
     }
 }
