@@ -28,22 +28,28 @@
         <textarea name="user_answer" class="code">{{ task.code_task }}</textarea>
         <br>
         <br>
+
         {% if messages %}
             {% for message in messages %}
-                <div style="color: {% if message.tags == 'error' %}red{% else %}green{% endif %}; font-size: 22px;">
-                    {{ message }}
-                </div>
+                {% if message.tags == 'error' %}
+                    <div style="color: red; font-size: 20px;">
+                        {{ message }}
+                    </div>
+                {% elif message.tags == 'success' %}
+                    <div style="color: green; font-size: 20px;">
+                        {{ message }}
+                    </div>
+                {% elif message.tags == 'info' %}
+                    <div style="font-size: 16px;">
+                        {{ message }}
+                    </div>
+                {% endif %}
             {% endfor %}
         {% endif %}
-        {% if message.tags == 'info' %}
-            <div>
-                {{ message }}
-            </div>
-        {% endif %}
+
         <br>
         <button type="submit" class="btn btn-secondary btn-lg" name="action" value="submit" style="background-color: rgb(157,144,159); border-color:rgb(157,144,159);">Submit</button>
-        <button type="submit" class="btn btn-secondary btn-lg" name="action" value="ask_gpt" style="background-color: rgb(157,144,159); border-color:rgb(157,144,159);">GPT Help</button>    
+        <button type="submit" class="btn btn-secondary btn-lg" name="action" value="ask_gpt" style="background-color: rgb(157,144,159); border-color:rgb(157,144,159);">AI Help</button>    
     </form> 
-
 {% endblock %}
 
