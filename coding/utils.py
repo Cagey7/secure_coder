@@ -18,7 +18,6 @@ def ask_chatgpt(context, user_answer):
         ]
     )
     gpt_answer = completion.choices[0].message.content
-    print(gpt_answer)
     for word in yes_answer:
         if word in gpt_answer:
             return True
@@ -41,3 +40,15 @@ def check_python_code(code):
         sys.stderr = original_stderr
 
     return error_stream.getvalue()
+
+
+def gpt_help(user_answer):
+    completion = client.chat.completions.create(
+        model="gpt-3.5-turbo-0125",
+        messages=[
+            {"role": "system", "content": f"Explain in one paragraph about the vulnerabilities in the transmitted code"},
+            {"role": "user", "content": f"{user_answer}"}
+        ]
+    )
+
+    return completion.choices[0].message.content

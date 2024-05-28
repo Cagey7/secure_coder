@@ -2,7 +2,8 @@
 
 {% block body %}
     <br>
-    <h3>Solved task</h3>
+    <h3>Username: {{user.get_username}} </h3>
+    <h4>Solved task</h4>
     {% if vulnerabilities_count %}
         {% for vulnerability, counts in vulnerabilities_count.items %}
         <a href="{% url 'tasks' vulnerability.slug %}" style="text-decoration: none; color: black;">

@@ -54,6 +54,11 @@ def check_task(request, task_id):
                     messages.error(request, msg)
                     return redirect(request.META.get("HTTP_REFERER", "index"))
 
+            if ask_chatgpt("Does this code have vulnerabilities?", user_answer):
+                msg = "There is a vulnerability in the code"
+                messages.error(request, msg)
+                return redirect(request.META.get("HTTP_REFERER", "index"))
+            
             msg = "Correct answer 🙃"
             task = Task.objects.get(pk=task_id)
             user = request.user
@@ -62,15 +67,7 @@ def check_task(request, task_id):
             return redirect(request.META.get("HTTP_REFERER", "index"))
         elif action == "ask_gpt":
             user_answer = request.POST.get("user_answer")
-            
-            completion = client.chat.completions.create(
-                model="gpt-3.5-turbo-0125",
-                messages=[
-                    {"role": "system", "content": f"Дай подсказу об уязвимостях в коде"},
-                    {"role": "user", "content": f"{user_answer}"}
-                ]
-            )
-            gpt_answer = completion.choices[0].message.content
+            gpt_answer = gpt_help(user_answer)
             messages.info(request, gpt_answer)
             return redirect(request.META.get("HTTP_REFERER", "index"))
 
